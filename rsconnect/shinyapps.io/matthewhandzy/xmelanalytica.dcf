@@ -1,0 +1,12 @@
+name: xmelanalytica
+title: xmelanalytica
+username:
+account: matthewhandzy
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1061688
+bundleId: 2284302
+url: https://matthewhandzy.shinyapps.io/xmelanalytica/
+when: 1564686741.43926
+asMultiple: FALSE
+asStatic: FALSE
