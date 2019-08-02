@@ -20,6 +20,7 @@ library(tidyverse)
 
 # import important functions and dataframes
 source("utils/xmel_utils.R", local = TRUE)
+import_xmel_data_local()
 
 # --
 #
@@ -178,6 +179,7 @@ ui <- tagList(fluidPage(
                              tabPanel("роки",
                                       tags$br(),
                                       plotlyOutput("sichovyk_boxplot_timeseries"),
+                                      tags$br(),
                                       plotOutput("sichovyk_density_timeseries")
                                ), # end tabPanel
                              tabPanel("ніч",

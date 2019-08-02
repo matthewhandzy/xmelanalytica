@@ -30,7 +30,7 @@ povnyj_ages_boxplot <- function() {
   summer_base <- "09/20/"
   tmp <- tibble(year = NA_integer_, age = NA_integer_)
   
-  for (i in 2004:(Sys.Date() %>% year())) {
+  for (i in 2004:(Sys.Date() %>% lubridate::year())) {
     itmp <- lubridate::as_datetime((xm_povnyj_27 %>% filter(nich <= i))$bday, format = "%m/%d/%Y") %>% 
       calc_age(refdate = lubridate::as_datetime(paste0(summer_base, i), format = "%m/%d/%Y"))
     
@@ -42,7 +42,11 @@ povnyj_ages_boxplot <- function() {
   p <- tmp %>% 
     plot_ly(x = ~year,
             y = ~age,
-            type = "box")
+            type = "box") %>% 
+    layout(title = "Distribution of Січовики Age by Year",
+           xaxis = list(title = "year"),
+           yaxis = list(title = "age range")
+    )
   
   rm(summer_base, tmp, i, itmp)
   
@@ -64,7 +68,7 @@ povnyj_ages_density <- function() {
   summer_base <- "09/20/"
   tmp <- tibble(year = NA_integer_, age = NA_integer_)
   
-  for (i in 2004:(Sys.Date() %>% year())) {
+  for (i in 2004:(Sys.Date() %>% lubridate::year())) {
     itmp <- lubridate::as_datetime((xm_povnyj_27 %>% filter(nich <= i))$bday, format = "%m/%d/%Y") %>% 
       calc_age(refdate = lubridate::as_datetime(paste0(summer_base, i), format = "%m/%d/%Y"))
     
@@ -74,7 +78,12 @@ povnyj_ages_density <- function() {
   tmp$year <- factor(tmp$year, ordered = TRUE)
   
   p <- ggplot(tmp, aes(age, fill = year)) + 
-    geom_density(alpha = 0.25, position = "identity")
+    geom_density(alpha = 0.25, position = "identity") +
+    labs(title = "Density Plot of Січовик Ages per Year") +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    xlab(label = "age") +
+    ylab(label = "density")
+    
   
   rm(summer_base, tmp, i, itmp)
   

@@ -99,7 +99,7 @@ get_rada_img <- function(full_name, rank) {
 #
 # --
 calc_age <- function(bday, refdate = Sys.Date()) {
-  return(as.period(interval(bday, refdate), unit = "year")$year)
+  return(lubridate::as.period(lubridate::interval(bday, refdate), unit = "year")$year)
 }
 
 # --
