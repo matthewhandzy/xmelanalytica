@@ -1,16 +1,64 @@
-# Даїшник
-# 2019
+# ----------------------------------------
+#
 # ui.R
+#
+# author: Даїшник
+# email: matthewhandzy@gmail.com
+# date: 08/01/2019 
+# 
+# copyright (c) Matthew Handzy, 2019
+# 
+# ----------------------------------------
 
+library(htmltools)
 library(shiny)
+library(shinydashboard)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
+library(tidyverse)
 
 # import important functions and dataframes
 source("utils/xmel_utils.R", local = TRUE)
-import_xmel_data_local()
 
+# --
+#
+# function:   attach_dependencies
+# params:     (shiny ui) x
+# returns:    none
+#
+# purpose:    attach html/css dependencies for shinydashboard
+# 
+# note:       none
+# 
+# --
+attach_dependencies <- function(x) {
+  if (getOption("shiny.minified", TRUE)) {
+    adminLTE_js <- "app.min.js"
+    adminLTE_css <- c("AdminLTE.min.css", "_all-skins.min.css")
+  } else {
+    adminLTE_js <- "app.js"
+    adminLTE_css <- c("AdminLTE.css", "_all-skins.css")
+  }
+  
+  dashboardDeps <- list(
+    htmlDependency("AdminLTE", "2.0.6",
+                   c(file = system.file("AdminLTE", package = "shinydashboard")),
+                   script = adminLTE_js,
+                   stylesheet = adminLTE_css
+    ),
+    htmlDependency("shinydashboard",
+                   as.character(utils::packageVersion("shinydashboard")),
+                   c(file = system.file(package = "shinydashboard")),
+                   script = "shinydashboard.js",
+                   stylesheet = "shinydashboard.css"
+    )
+  )
+  
+  shinydashboard:::appendDependencies(x, dashboardDeps)
+}
+
+# page layout UI
 ui <- tagList(fluidPage(
   
   # initialize shinyjs package
@@ -19,16 +67,17 @@ ui <- tagList(fluidPage(
   # initialize theme
   theme = shinytheme("paper"),
   
-  # set window image
+  # set tab window image
   tags$head(HTML('<link rel="icon", href="herb_circle.png", type="image/png" />')),
   
   navbarPage(
     
-    # set navpage title
+    # set navpage title header
     title = div(img(height = 30,
                     width = 30,
                     src = "herb_circle.png"
                     ),
+                HTML('&nbsp;'),
                 "xmel analytica"
                 ),
     
@@ -72,10 +121,10 @@ ui <- tagList(fluidPage(
     tabPanel("Кандидати",
              sidebarLayout(
                sidebarPanel(
-                 pickerInput(inputId = "progress_predict_selection",
+                 pickerInput(inputId = "kandydat_progress_predict_selection",
                              label = "select кандидат",
                              choices = joined_names(xm_progress),
-                             selected = joined_names(xm_progress)[1],
+                             selected = "Matthew Handzy",
                              multiple = FALSE
                              ), # end picker input
                  width = 2
@@ -83,20 +132,28 @@ ui <- tagList(fluidPage(
                mainPanel(
                  tabsetPanel(type = "tabs",
                              tabPanel("overview",
-                                      tags$br()
-                                      
+                                      tags$br(),
+                                      fluidRow(
+                                        valueBoxOutput("kandydat_numbers"),
+                                        valueBoxOutput("kandydat_crossing"),
+                                        valueBoxOutput("kandydat_influx")
+                                      ), # end fluidRow
+                                      tags$br(),
+                                      fluidRow(
+                                        plotlyOutput("kandydat_makeup_plot")
+                                      ) # end fluidRow
                                       ), # end tabPanel
                              tabPanel("перша рада",
                                       tags$br(),
-                                      fluidRow(column(8, plotlyOutput("one_rada_fate")),
-                                               column(4, plotlyOutput("one_rada_attendance"))
+                                      fluidRow(column(8, plotlyOutput("kandydat_one_rada_fate")),
+                                               column(4, plotlyOutput("kandydat_one_rada_attendance"))
                                         ) # end fluidRow
                                       ), # end tabPanel
                              tabPanel("прогрес",
                                       tags$br(),
                                       fluidRow(
-                                        uiOutput("progress_ranks"),
-                                        uiOutput("progress_rada_img")
+                                        uiOutput("kandydat_progress_ranks"),
+                                        uiOutput("kandydat_progress_rada_img")
                                         ) # end fluidRow
                                       ) # end tabPanel
                              ) # end tabsetPanel
@@ -118,9 +175,14 @@ ui <- tagList(fluidPage(
                  ), # end sidebarPanel
                mainPanel(
                  tabsetPanel(type = "tabs",
+                             tabPanel("роки",
+                                      tags$br(),
+                                      plotlyOutput("sichovyk_boxplot_timeseries"),
+                                      plotOutput("sichovyk_density_timeseries")
+                               ), # end tabPanel
                              tabPanel("ніч",
                                       tags$br(),
-                                      plotlyOutput("nich_distributions")
+                                      plotlyOutput("sichovyk_nich_distributions")
                                       ) # end tabPanel
                              ) # end tabsetPanel
                  ) # end mainPanel
@@ -134,3 +196,6 @@ ui <- tagList(fluidPage(
     
   ) # end navbarpage
 )) # end fluidPage and taglist
+
+# attach dependencies
+ui <- attach_dependencies(tags$body(shiny::fluidPage(ui)))
