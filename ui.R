@@ -20,6 +20,8 @@ library(tidyverse)
 
 # import important functions and dataframes
 source("utils/xmel_utils.R", local = TRUE)
+
+# import all datatables
 import_xmel_data_local()
 
 # --
@@ -105,7 +107,10 @@ ui <- tagList(fluidPage(
                                         img(src='summer_rada2019.png', 
                                             align = "center",
                                             width = "100%")
-                                        )
+                                        ), # end fluidRow
+                                      fluidRow(
+                                        plotlyOutput("rada_attendance")
+                                      ) # end fluidRow
                                       ), # end tabPanel
                              tabPanel("карта",
                                       tags$br(),
@@ -142,6 +147,9 @@ ui <- tagList(fluidPage(
                                       tags$br(),
                                       fluidRow(
                                         plotlyOutput("kandydat_makeup_plot")
+                                      ), # end fluidRow
+                                      fluidRow(
+                                        plotlyOutput("kandydat_makeup_timeseries")
                                       ) # end fluidRow
                                       ), # end tabPanel
                              tabPanel("перша рада",

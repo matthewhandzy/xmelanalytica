@@ -147,7 +147,7 @@ project_future <- function(firstname, lastname) {
     next_rada <- FALSE
   }
   
-  rm(ranks, i, current_rank)
+  rm(current_rank, ranks, i)
   return(progress)
 }
 
@@ -166,7 +166,7 @@ project_future <- function(firstname, lastname) {
 #
 # --
 kandydat_makeup <- function() {
-  tmp <- tibble(kandydat = NA_character_, rank = NA_character_)
+  tmp <- tibble()
   for (i in 1:nrow(xm_candidates)) { 
     tmp <- bind_rows(tmp, 
                      tibble(kandydat = paste(xm_candidates[i,]$first_name, xm_candidates[i,]$last_name),
@@ -188,6 +188,64 @@ kandydat_makeup <- function() {
            xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
            yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
     
+  rm(i, tmp)
+  
+  return(p)
+}
+
+# --
+#
+# function:   kandydat_makeup_timeseries
+# params:     none
+# returns:    (plotly) stacked bar chart of distribution of each rank
+#             each year
+#             
+#
+# purpose:    creates a graph of what kandydat ranks we have
+#             and in what numbers, per year
+# 
+# note:       none
+#
+# --
+kandydat_makeup_timeseries <- function() {
+  tmp_df <- xm_attendance[,26:length(xm_attendance)]
+  
+  for (i in 1:nrow(tmp_df)) {
+    for (j in 1:(ncol(tmp_df)-1)) {
+      if (is.na(tmp_df[i, j+1])) {
+        tmp_df[i, j+1] <- tmp_df[i, j]
+      }
+    }
+  }
+  
+  data <- tibble()
+  
+  for (i in 1:ncol(tmp_df)) {
+    tmp <- tmp_df[,i] %>% 
+      na.omit() %>% 
+      group_by_at(1) %>% 
+      count()
+
+    yearz <- (tmp %>% names(.))[1]
+    colnames(tmp) <- c("rank", "count")
+    
+    data <- bind_rows(data, tibble(year = yearz, rank = tmp$rank, count = tmp$count))
+  }
+  
+  data$year <- factor(data$year, levels = (data$year %>% unique()))
+  
+  p <- data %>% 
+    filter(rank != "x") %>% 
+    group_by(year) %>% 
+    plot_ly(x = ~year,
+            y = ~count,
+            type = "bar",
+            name = ~rank,
+            color = ~rank) %>% 
+    layout(barmode = "stack")
+  
+  rm(i, j, tmp_df, tmp, data)
+  
   return(p)
 }
 

@@ -16,7 +16,7 @@ library(tidyverse)
 # import important functions and dataframes
 source("utils/xmel_utils.R", local = TRUE)
 
-# import working dataset from file
+# import working dataset from db
 import_xmel_data_local()
 
 # constant definitions
@@ -38,6 +38,10 @@ NEXT_RADA = "summer 2019"
 server <- function(input, output, session) {
   
   # ---------- sich page ---------- #
+  
+  output$rada_attendance <- renderPlotly({
+    rada_attendance()
+  })
   
   # --
   #
@@ -88,7 +92,7 @@ server <- function(input, output, session) {
   # --
   output$kandydat_crossing <- renderValueBox({
     valueBox(
-      value = (xm_quant_progress[,length(xm_quant_progress)] %>% 
+      value = (xm_attendance[,length(xm_attendance)] %>% 
                  na.omit() %>% 
                  count()
                )$n,
@@ -116,6 +120,64 @@ server <- function(input, output, session) {
       icon = icon("search-plus"),
       color = "light-blue"
     )
+  })
+  
+  # --
+  #
+  # output name:    kandydat_makeup_plot
+  # output type:    (plotly) graph
+  #
+  # purpose:        output the composition of kandydaty
+  # 
+  # note:           none
+  # 
+  # --
+  output$kandydat_makeup_plot <- renderPlotly({
+    kandydat_makeup()
+  })
+  
+  # --
+  #
+  # output name:    kandydat_makeup_timeseries
+  # output type:    (plotly) graph
+  #
+  # purpose:        stacked boxplot of kandydat numbers thru the years
+  # 
+  # note:           none
+  # 
+  # --
+  output$kandydat_makeup_timeseries <- renderPlotly({
+    kandydat_makeup_timeseries()
+  })
+  
+  # --
+  #
+  # output name:    kandydat_one_rada_fate
+  # output type:    (plotly) graph
+  #
+  # purpose:        output the kureni that STP's who did
+  #                 not receive hustky in Xmeli joined
+  # 
+  # note:           none
+  # 
+  # --
+  output$kandydat_one_rada_fate <- renderPlotly({
+    one_rada_plotly_proportions()
+  })
+  
+  # --
+  #
+  # output name:    kandydat_one_rada_attendance
+  # output type:    (plotly) graph
+  #
+  # purpose:        output the attendance of first
+  #                 and only timers each year
+  # 
+  # note:           none
+  # 
+  # --
+  output$kandydat_one_rada_attendance <- renderPlotly({
+    one_rada_plotly_attendance()
   })
   
   # --
@@ -176,50 +238,6 @@ server <- function(input, output, session) {
           width = DEF_WIDTH,
           height = DEF_HEIGHT)
     )
-  })
-  
-  # --
-  #
-  # output name:    kandydat_one_rada_fate
-  # output type:    (plotly) graph
-  #
-  # purpose:        output the kureni that STP's who did
-  #                 not receive hustky in Xmeli joined
-  # 
-  # note:           none
-  # 
-  # --
-  output$kandydat_one_rada_fate <- renderPlotly({
-    one_rada_plotly_proportions()
-  })
-  
-  # --
-  #
-  # output name:    kandydat_one_rada_attendance
-  # output type:    (plotly) graph
-  #
-  # purpose:        output the attendance of first
-  #                 and only timers each year
-  # 
-  # note:           none
-  # 
-  # --
-  output$kandydat_one_rada_attendance <- renderPlotly({
-    one_rada_plotly_attendance()
-  })
-  
-  # --
-  #
-  # output name:    kandydat_makeup_plot
-  # output type:    (plotly) graph
-  #
-  # purpose:        output the composition of kandydaty
-  # 
-  # note:           none
-  # 
-  # --
-  output$kandydat_makeup_plot <- renderPlotly({
-    kandydat_makeup()
   })
   
   # ---------- sichovyk page ---------- #

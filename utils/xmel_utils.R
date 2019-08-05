@@ -15,9 +15,10 @@ library(tidyverse)
 
 # -- main driver for utilities -- #
 
-source("utils/general_utils.R", local = TRUE)
 source("utils/sich_utils.R", local = TRUE)
-source("utils/rada_utils.R", local = TRUE)
+source("utils/kandydat_utils.R", local = TRUE)
 source("utils/sichovyk_utils.R", local = TRUE)
 source("utils/dyadko_utils.R", local = TRUE)
-source("utils/kandydat_utils.R", local = TRUE)
+source("utils/rada_utils.R", local = TRUE)
+source("utils/db_utils.R", local = TRUE)
+source("utils/general_utils.R", local = TRUE)

@@ -13,7 +13,9 @@
 library(plotly)
 library(tidyverse)
 
+# --
 # -- sichovyk page utility functions -- #
+# --
 
 # --
 #
@@ -28,7 +30,7 @@ library(tidyverse)
 # --
 povnyj_ages_boxplot <- function() {
   summer_base <- "09/20/"
-  tmp <- tibble(year = NA_integer_, age = NA_integer_)
+  tmp <- tibble()
   
   for (i in 2004:(Sys.Date() %>% lubridate::year())) {
     itmp <- lubridate::as_datetime((xm_povnyj_27 %>% filter(nich <= i))$bday, format = "%m/%d/%Y") %>% 
@@ -66,7 +68,7 @@ povnyj_ages_boxplot <- function() {
 # --
 povnyj_ages_density <- function() {
   summer_base <- "09/20/"
-  tmp <- tibble(year = NA_integer_, age = NA_integer_)
+  tmp <- tibble()
   
   for (i in 2004:(Sys.Date() %>% lubridate::year())) {
     itmp <- lubridate::as_datetime((xm_povnyj_27 %>% filter(nich <= i))$bday, format = "%m/%d/%Y") %>% 

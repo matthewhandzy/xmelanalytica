@@ -15,7 +15,9 @@ library(googlesheets)
 library(plotly)
 library(tidyverse)
 
+# --
 # -- general util functions -- #
+# --
 
 # --
 #
@@ -104,45 +106,6 @@ calc_age <- function(bday, refdate = Sys.Date()) {
 
 # --
 #
-# function:   import_xmel_data
-# params:     none
-# returns:    none
-#
-# purpose:    imports xmel data from googlesheets
-# 
-# note:       requires gs authentication
-#
-# --
-import_xmel_data <- function() {
-  gs_auth()
-  
-  xm_att_sheet <- gs_title("xmel_attendance")
-  xm_attendance <<- xm_att_sheet %>% gs_read(ws = "master")
-  
-  xm_katt_sheet <- gs_title("xmel_kandydat_attendance")
-  xm_quant_progress <<- xm_katt_sheet %>% gs_read(ws = "quantitative_27")
-  xm_qual_progress <<- xm_katt_sheet %>% gs_read(ws = "qualitative_27")
-  
-  xm_progress_sheet <- gs_title("xmel_progress")
-  xm_progress <<-  xm_progress_sheet %>% gs_read(ws = "progress")
-  
-  xm_roster_sheet <- gs_title("xmel_roster")
-  xm_one_rada <<- xm_roster_sheet %>% gs_read(ws = "one_rada")
-  xm_candidates <<- xm_roster_sheet %>% gs_read(ws = "candidates")
-  xm_povnyj_27 <<- xm_roster_sheet %>% gs_read(ws = "povnyj_27")
-  xm_povnyj_23 <<- xm_roster_sheet %>% gs_read(ws = "povnyj_23")
-  
-  xm_ukraine_sheet <- gs_title("xmel_ukraine_roster")
-  xm_ukraine_candidates <<- xm_ukraine_sheet %>% gs_read(ws = "candidates")
-  xm_ukraine_povnyj_27 <<- xm_ukraine_sheet %>% gs_read(ws = "povnyj_27")
-  xm_ukraine_povnyj_23 <<- xm_ukraine_sheet %>% gs_read(ws = "povnyj_23")
-  
-  rm(xm_att_sheet, xm_katt_sheet, xm_progress_sheet, xm_roster_sheet)
-  export_xmel_data_local()
-}
-
-# --
-#
 # function:   import_xmel_data_local
 # params:     none
 # returns:    none
@@ -154,8 +117,6 @@ import_xmel_data <- function() {
 # --
 import_xmel_data_local <- function() {
   xm_attendance <<- read_csv(file = "files/xm_attendance.csv")
-  xm_quant_progress <<- read_csv(file = "files/xm_quant_progress.csv")
-  xm_qual_progress <<- read_csv(file = "files/xm_qual_progress.csv")
   xm_progress <<- read_csv(file = "files/xm_progress.csv")
   xm_one_rada <<- read_csv(file = "files/xm_one_rada.csv")
   xm_candidates <<- read_csv(file = "files/xm_candidates.csv")
@@ -179,8 +140,6 @@ import_xmel_data_local <- function() {
 # --
 export_xmel_data_local <- function() {
   write_csv(xm_attendance, path = "files/xm_attendance.csv")
-  write_csv(xm_quant_progress, path = "files/xm_quant_progress.csv")
-  write_csv(xm_qual_progress, path = "files/xm_qual_progress.csv")
   write_csv(xm_progress, path = "files/xm_progress.csv")
   write_csv(xm_one_rada, path = "files/xm_one_rada.csv")
   write_csv(xm_candidates, path = "files/xm_candidates.csv")
@@ -192,8 +151,6 @@ export_xmel_data_local <- function() {
 }
 
 import_and_export_local <- function() {
-  
-  import_xmel_data()
+  import_xmel_data_local()
   export_xmel_data_local()
-  
 }

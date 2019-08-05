@@ -5,8 +5,8 @@ account: matthewhandzy
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1061688
-bundleId: 2287309
+bundleId: 2287335
 url: https://matthewhandzy.shinyapps.io/xmelanalytica/
-when: 1564776109.63188
+when: 1564776727.54109
 asMultiple: FALSE
 asStatic: FALSE

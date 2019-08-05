@@ -13,7 +13,9 @@
 library(plotly)
 library(tidyverse)
 
+# --
 # -- sich main page functions -- #
+# --
 
 # --
 #
