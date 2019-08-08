@@ -21,14 +21,14 @@ library(tidyverse)
 
 # --
 #
-# function:   get_rank
+# function:   kandydat_get_rank
 # params:     (string) firstname, (string) lastname
 # returns:    (string) rank code for a kandydat/sichovyk
 #
 # purpose:    calculate the rank of a given member
 # 
 # --
-get_rank <- function(firstname, lastname) {
+kandydat_get_rank <- function(firstname, lastname) {
   cand <- xm_progress %>% filter(first_name == firstname, last_name == lastname)
   if (nrow(cand) == 0) {
     return("nodata")
@@ -69,7 +69,7 @@ get_rank <- function(firstname, lastname) {
 
 # --
 #
-# function:   rankup
+# function:   kandydat_rankup
 # params:     (string) rank, () date_rank, (flag) next_rada_flag
 # returns:    (string) a combinatio of "w/s" and a year of promotion
 #
@@ -80,7 +80,7 @@ get_rank <- function(firstname, lastname) {
 #             and the date of curr 
 #
 # --
-rankup <- function(rank, date_rank, next_rada_flag) {
+kandydat_rankup <- function(rank, date_rank, next_rada_flag) {
   
   nextrada <- "s19"
   
@@ -115,7 +115,7 @@ rankup <- function(rank, date_rank, next_rada_flag) {
 
 # --
 #
-# function:   project_future
+# function:   kandydat_project_future
 # params:     (string) firstname, (string) lastname
 # returns:    (tibble) a tibble of future promotion dates
 #
@@ -125,10 +125,10 @@ rankup <- function(rank, date_rank, next_rada_flag) {
 # note:       projects the future timeline for each stupin
 #
 # --
-project_future <- function(firstname, lastname) {
+kandydat_project_future <- function(firstname, lastname) {
   progress <- xm_progress %>% filter(first_name == firstname, last_name == lastname)
   
-  current_rank <- get_rank(firstname, lastname)
+  current_rank <- kandydat_get_rank(firstname, lastname)
   if (current_rank == "nodata") {
     return(current_rank)
   }
@@ -143,7 +143,7 @@ project_future <- function(firstname, lastname) {
   
   # find future projected dates
   for (i in (match(current_rank, ranks)+1):5) {
-    progress[,i+2] <- rankup(ranks[i], data.frame(progress)[,i+2-1], next_rada)
+    progress[,i+2] <- kandydat_rankup(ranks[i], data.frame(progress)[,i+2-1], next_rada)
     next_rada <- FALSE
   }
   
@@ -170,7 +170,7 @@ kandydat_makeup <- function() {
   for (i in 1:nrow(xm_candidates)) { 
     tmp <- bind_rows(tmp, 
                      tibble(kandydat = paste(xm_candidates[i,]$first_name, xm_candidates[i,]$last_name),
-                            rank = get_rank(xm_candidates[i,]$first_name, xm_candidates[i,]$last_name)
+                            rank = kandydat_get_rank(xm_candidates[i,]$first_name, xm_candidates[i,]$last_name)
                      )
     )
   } 
@@ -251,7 +251,7 @@ kandydat_makeup_timeseries <- function() {
 
 # --
 #
-# function:   one_rada_plotly_proportions
+# function:   kandydat_one_rada_plotly_proportions
 # params:     none
 # returns:    (plotly) a tibble of future promotion dates
 #
@@ -261,7 +261,7 @@ kandydat_makeup_timeseries <- function() {
 # note:       none
 #
 # --
-one_rada_plotly_proportions <- function() {
+kandydat_one_rada_plotly_proportions <- function() {
   p <- xm_one_rada %>% 
     select(status) %>% 
     group_by(status) %>% 
@@ -279,7 +279,7 @@ one_rada_plotly_proportions <- function() {
 
 # --
 #
-# function:   one_rada_plotly_attendance
+# function:   kandydat_one_rada_plotly_attendance
 # params:     none
 # returns:    (plotly) a bar graph of first-timers per year
 #
@@ -289,7 +289,7 @@ one_rada_plotly_proportions <- function() {
 #
 # --
 # plots what year one rada attendees came
-one_rada_plotly_attendance <- function() {
+kandydat_one_rada_plotly_attendance <- function() {
   p <- tibble(year = factor(grep("[0-9]", unlist(strsplit(xm_one_rada$rada, " ")), value = TRUE))) %>%
     group_by(year) %>% 
     count() %>% 

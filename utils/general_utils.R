@@ -79,13 +79,13 @@ joined_names <- function(df) {
 #
 # --
 get_rada_img <- function(full_name, rank) {
-  if(is.na(project_future(split_name(full_name)[1], split_name(full_name)[2])[[rank]])) {
+  if(is.na(kandydat_project_future(split_name(full_name)[1], split_name(full_name)[2])[[rank]])) {
     return("unknown.png")
   }
-  if(project_future(split_name(full_name)[1], split_name(full_name)[2])[[rank]] == "skipped") {
+  if(kandydat_project_future(split_name(full_name)[1], split_name(full_name)[2])[[rank]] == "skipped") {
     return("skipped.png")
   }
-  return(paste0(project_future(split_name(full_name)[1], split_name(full_name)[2])[[rank]], ".png"))
+  return(paste0(kandydat_project_future(split_name(full_name)[1], split_name(full_name)[2])[[rank]], ".png"))
 }
 
 # --

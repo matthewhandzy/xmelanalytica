@@ -90,33 +90,42 @@ ui <- tagList(fluidPage(
     # ---------- landing page ---------- #
     tabPanel("Січ",
              sidebarLayout(
-               sidebarPanel(
-                 pickerInput(inputId = "sich_map_choices",
-                             label = "select group",
-                             choices = c("кандидати", "січовики27", "січовики23"),
-                             selected = "січовики27",
-                             multiple = TRUE
-                             ),
-                 width = 2
-                 ), # end sidebarPanel
+               sidebarPanel(width=2),
                mainPanel(
                  tabsetPanel(type = "tabs",
-                             tabPanel("хлюп",
-                                      tags$br(),
+                             tabPanel("overview",
+                                      
+                                      tags$br(), tags$br(),
+                                      
+                                      fluidRow(
+                                        img(src='wildwood.png', 
+                                            align = "center",
+                                            width = "100%")
+                                        ), # end fluidRow
+                                      
+                                      tags$br(), tags$br(),
+                                      
                                       fluidRow(
                                         img(src='summer_rada2019.png', 
                                             align = "center",
                                             width = "100%")
+                                      ), # end fluidRow
+                                      
+                                      tags$br(), tags$br(),
+                                      
+                                      fluidRow(
+                                        img(src='sweater_party.png', 
+                                            align = "center",
+                                            width = "100%")
                                         ), # end fluidRow
+                                      
+                                      tags$br(), tags$br(),
+                                      
                                       fluidRow(
-                                        plotlyOutput("rada_attendance")
-                                      ) # end fluidRow
-                                      ), # end tabPanel
-                             tabPanel("карта",
-                                      tags$br(),
-                                      fluidRow(
-                                        plotlyOutput("sich_map")
-                                        ) # end fluidrow
+                                        img(src='kalyna_deb.png', 
+                                            align = "center",
+                                            width = "100%")
+                                        ) # end fluidRow
                                       ) # end tabPanel
                              ) # end tabsetPanel
                  ) # end mainPanel
@@ -152,13 +161,13 @@ ui <- tagList(fluidPage(
                                         plotlyOutput("kandydat_makeup_timeseries")
                                       ) # end fluidRow
                                       ), # end tabPanel
-                             tabPanel("перша рада",
+                             tabPanel("one-rada",
                                       tags$br(),
                                       fluidRow(column(8, plotlyOutput("kandydat_one_rada_fate")),
                                                column(4, plotlyOutput("kandydat_one_rada_attendance"))
                                         ) # end fluidRow
                                       ), # end tabPanel
-                             tabPanel("прогрес",
+                             tabPanel("progress",
                                       tags$br(),
                                       fluidRow(
                                         uiOutput("kandydat_progress_ranks"),
@@ -169,39 +178,73 @@ ui <- tagList(fluidPage(
                  ) # end mainPanel
                ) # end sidebarLayout
              ), # end tabpanel
-    # end kandydat tabpanel
     
     # ---------- povnyj page ---------- #
     tabPanel("Січовики",
              sidebarLayout(
                sidebarPanel(
-                 pickerInput(inputId = "dummy_input",
-                             label = "dummy input",
-                             choices = c("dummy inputs"),
-                             multiple = FALSE
+                 pickerInput(inputId = "sich_map_choices",
+                             label = "select group",
+                             choices = c("кандидати", "січовики27", "січовики23"),
+                             selected = "січовики27",
+                             multiple = TRUE
                              ),
                  width = 2
                  ), # end sidebarPanel
                mainPanel(
                  tabsetPanel(type = "tabs",
-                             tabPanel("роки",
+                             tabPanel("overview"
+                                      ), # end tabPanel
+                             tabPanel("demographics",
                                       tags$br(),
                                       plotlyOutput("sichovyk_boxplot_timeseries"),
                                       tags$br(),
                                       plotOutput("sichovyk_density_timeseries")
-                               ), # end tabPanel
+                                      ), # end tabPanel
                              tabPanel("ніч",
                                       tags$br(),
                                       plotlyOutput("sichovyk_nich_distributions")
+                                      ), # end tabPanel
+                             tabPanel("geography",
+                                      tags$br(),
+                                      fluidRow(
+                                        plotlyOutput("sich_map")
+                                        ) # end fluidrow
                                       ) # end tabPanel
                              ) # end tabsetPanel
                  ) # end mainPanel
                ) # end sidebarLayout
              ), # end tabPanel
     
+    # ---------- rada page ---------- #
+    tabPanel("Рада",
+             sidebarLayout(
+               sidebarPanel(width = 2), # end sidebarPanel
+               mainPanel(
+                 tabsetPanel(type = "tabs",
+                             tabPanel("overview",
+                                      tags$br(),
+                                      fluidRow(
+                                        plotlyOutput("rada_attendance")
+                                        ) # end fluidRow
+                                      ) # end tabPanel
+                             ) # end tabsetPanel
+                 ) # end mainPanel
+               ) # end sidebarLayout
+             ), # end tabPanel rada
+    
     # ---------- dyadko page ---------- #
     tabPanel("Дядьки",
              collapsibleTreeOutput("dyadko_tree", height = "1200px")
+             ), # end tabpanel dyadko
+    
+    # ---------- table page ---------- #
+    tabPanel("Таблиці",
+             tabsetPanel(type = "tabs",
+                         tabPanel("attendance"),
+                         tabPanel("progress"),
+                         tabPanel("members"),
+                         tabPanel("ukraine"))
              ) # end tabpanel dyadko
     
   ) # end navbarpage

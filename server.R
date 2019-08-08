@@ -162,7 +162,7 @@ server <- function(input, output, session) {
   # 
   # --
   output$kandydat_one_rada_fate <- renderPlotly({
-    one_rada_plotly_proportions()
+    kandydat_one_rada_plotly_proportions()
   })
   
   # --
@@ -177,7 +177,7 @@ server <- function(input, output, session) {
   # 
   # --
   output$kandydat_one_rada_attendance <- renderPlotly({
-    one_rada_plotly_attendance()
+    kandydat_one_rada_plotly_attendance()
   })
   
   # --
@@ -254,7 +254,7 @@ server <- function(input, output, session) {
   # 
   # --
   output$sichovyk_boxplot_timeseries <- renderPlotly({
-    povnyj_ages_boxplot()
+    sichovyk_ages_boxplot()
   })
   
   # --
@@ -269,7 +269,7 @@ server <- function(input, output, session) {
   # 
   # --
   output$sichovyk_density_timeseries <- renderPlot({
-    povnyj_ages_density()
+    sichovyk_ages_density()
   })
   
   # --
